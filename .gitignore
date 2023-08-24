@@ -1,0 +1,5 @@
+# Ignore a specific directory
+./build/
+./.idea
+./.gradle
+./gradle
