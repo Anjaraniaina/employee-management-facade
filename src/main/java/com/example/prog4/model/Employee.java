@@ -29,18 +29,19 @@ public class Employee implements Serializable {
     private Csp csp;
     private Sex sex;
     private String cin;
-    private String cnaps;
+    private String endToEndId;
     private String address;
+    private String cnaps;
     private Integer childrenNumber;
     private String personalEmail;
     private String professionalEmail;
     private String registrationNumber;
 
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate entranceDate;
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate departureDate;
 
     private List<Position> positions;
