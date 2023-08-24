@@ -5,8 +5,7 @@ import com.example.prog4.cnapsrepo.entity.EmployeeCnapsEntity;
 import com.example.prog4.model.EmployeeFilter;
 import com.example.prog4.model.exception.NotFoundException;
 import com.example.prog4.repository.EmployeeInternRepository;
-import com.example.prog4.repository.EmployeeRepository;
-import com.example.prog4.repository.EmployeeRepositoryImpl;
+import com.example.prog4.repository.EmployeeRepositoryFacade;
 import com.example.prog4.repository.dao.EmployeeManagerDao;
 import com.example.prog4.repository.entity.Employee;
 import lombok.AllArgsConstructor;
@@ -22,37 +21,15 @@ import java.util.List;
 public class EmployeeService {
     private EmployeeInternRepository repository;
     private EmployeeCnapsRepository employeeCnapsRepository;
-    private EmployeeManagerDao employeeManagerDao;
-    private EmployeeRepositoryImpl employeeRepositoryImpl;
+    private EmployeeRepositoryFacade employeeRepositoryFacade;
 
 
     public Employee getOne(String id) {
-        return employeeRepositoryImpl.findOne(id);
+        return employeeRepositoryFacade.findOne(id);
     }
 
     public List<Employee> getAll(EmployeeFilter filter) {
-        Sort sort = Sort.by(filter.getOrderDirection(), filter.getOrderBy().toString());
-        Pageable pageable = PageRequest.of(filter.getIntPage() - 1, filter.getIntPerPage(), sort);
-        return employeeManagerDao.findByCriteria(
-                filter.getLastName(),
-                filter.getFirstName(),
-                filter.getCountryCode(),
-                filter.getSex(),
-                filter.getPosition(),
-                filter.getEntrance(),
-                filter.getDeparture(),
-                pageable
-        ).stream().map(this::combine).toList();
-    }
-
-    // intern end_to_end_id equals cnaps employee id
-    public Employee combine(Employee intern){
-        EmployeeCnapsEntity cnapsEntity =
-                employeeCnapsRepository.findById(intern.getEndToEndId())
-                        .orElseThrow(
-                                () -> new NotFoundException("Not found in cnaps databaseid=" + intern.getEndToEndId()
-                        ));
-        return intern.toBuilder().cnaps(cnapsEntity.getCnaps()).build();
+        return employeeRepositoryFacade.findAll(filter);
     }
 
     public void saveOne(Employee employee) {
